@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\Admin\DriverController;
+use App\Http\Controllers\ContactController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ Route::get('/aboutus', [UserController::class, 'aboutus'])->name('aboutus');
 Route::get('/blogs', [UserController::class, 'blogs'])->name('blogs');
 Route::get('/faqs', [UserController::class, 'faqs'])->name('faqs');
 Route::get('/contact', [UserController::class, 'contact'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->name('contact.store');
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
 

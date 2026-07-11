@@ -1,7 +1,56 @@
 @extends('maindesign')
 @section('contact')
-<!-- 🔥 PAGE HEADER -->
-<section class="bg-light text-center py-5 ">
+@if(session('success'))
+
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4">
+
+            <div class="modal-body text-center p-5">
+
+                <div class="mb-4">
+                    <i class="fa fa-check-circle text-success" style="font-size:70px;"></i>
+                </div>
+
+                <h3 class="fw-bold">Thank You!</h3>
+
+                <p class="text-muted mt-3">
+                    {{ session('success') }}
+                </p>
+
+                <button
+                    type="button"
+                    class="btn btn-primary px-5 mt-3"
+                    data-bs-dismiss="modal"
+                >
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    var modal = new bootstrap.Modal(
+        document.getElementById('successModal')
+    );
+
+    modal.show();
+
+});
+</script>
+
+@endif
+    <!-- 🔥 PAGE HEADER -->
+    <section class="bg-light text-center py-5 ">
     <div class="container" style="padding-top: 100px;">
 
         <h2 class="fw-bold">#let's_talk</h2>
@@ -38,14 +87,46 @@
 
         <!-- RIGHT SIDE (FORM) -->
         <div class="form-group mb-4 shadow-sm p-4 rounded-5 col-md-6">
-            <form>
-                <input class="form-control mb-3" type="text" placeholder="Your Name">
-                <input class="form-control mb-3" type="email" placeholder="Email">
-                <input class="form-control mb-3" type="text" placeholder="Subject">
-                <textarea class="form-control mb-3" rows="5" placeholder="Your Message"></textarea>
+            <form method="POST" action="{{ route('contact.store') }}">
+    @csrf
 
-                <button class="btn btn-primary w-100">Submit</button>
-            </form>
+    <input
+        class="form-control mb-3"
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        required
+    >
+
+    <input
+        class="form-control mb-3"
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+    >
+
+    <input
+        class="form-control mb-3"
+        type="text"
+        name="subject"
+        placeholder="Subject"
+        required
+    >
+
+    <textarea
+        class="form-control mb-3"
+        rows="5"
+        name="message"
+        placeholder="Your Message"
+        required
+    ></textarea>
+
+    <button class="btn btn-primary w-100">
+        Submit
+    </button>
+
+</form>
         </div>
 
     </div>

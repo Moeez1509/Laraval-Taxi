@@ -10,10 +10,10 @@ use App\Models\Review;
 use App\Models\sos_alert;
 use App\Models\PushNotification;
 use App\Models\ContactEnquiry;
+use App\Models\Complaints;
 
 use App\Http\Controllers\Api\Admin\DriverController;
-
-
+use App\Models\Complaint;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,20 +44,36 @@ Route::get('/sos_alerts/{id}', function ($id) {
         'admin'
     ])->findOrFail($id);
 });
+Route::put('/sos_alerts/{id}', function (Request $request, $id) {
+
+    $sos = sos_alert::findOrFail($id);
+
+    if (!$sos) {
+        return response()->json([
+            'message' => 'SOS Alert not found'
+        ], 404);
+    }
+
+    $sos->status = $request->status;
+    $sos->save();
+
+    return response()->json($sos);
+
+});
 Route::get('/push_notifications', function () {
     return PushNotification::all();
 });
-Route::get('/contact_enquiries', function () {
-    return ContactEnquiry::all();
+Route::get('/complaints', function () {
+    return Complaints::all();
 });
 
-Route::put('/contact_enquiries/{id}', function (Request $request, $id) {
+Route::put('/complaints/{id}', function (Request $request, $id) {
 
-    $enquiry = ContactEnquiry::findOrFail($id);
+    $Complaints = Complaints::findOrFail($id);
 
-    $enquiry->status = $request->status;
+    $Complaints->status = $request->status;
 
-    $enquiry->save();
+    $Complaints->save();
 
     return response()->json([
         'success' => true,
@@ -67,3 +83,20 @@ Route::put('/contact_enquiries/{id}', function (Request $request, $id) {
 });
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
+Route::get('/contact_enquiry', function () {
+    return ContactEnquiry::all();
+});
+Route::put('/contact_enquiry/{id}', function (Request $request, $id) {
+
+    $Contact = ContactEnquiry::findOrFail($id);
+
+    $Contact->status = $request->status;
+
+    $Contact->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Status Updated Successfully'
+    ]);
+
+});
